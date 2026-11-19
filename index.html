@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Text Cleaner - Remove Em Dashes, Curly Quotes and Hidden Characters</title>
-<meta name="description" content="A minimal AI text cleaner: paste ChatGPT, Claude or Gemini output and get plain text back, with em dashes, curly quotes, ellipses, odd spaces and invisible characters replaced. Runs in the browser.">
+<meta name="description" content="A basic AI text cleaner: paste ChatGPT, Claude or Gemini output and get plain text back, with em dashes, curly quotes, ellipses, odd spaces and invisible characters replaced. Runs in the browser.">
 <style>
   body { font-family: system-ui, sans-serif; max-width: 760px; margin: 0 auto; padding: 24px 16px; color: #222; background: #fff; }
   h1 { font-size: 1.6rem; margin: 0 0 4px; }
@@ -21,7 +21,7 @@
 </head>
 <body>
 <h1>AI Text Cleaner</h1>
-<p>Paste text from ChatGPT, Claude or Gemini. The typographic characters these models add are swapped for plain keyboard characters as you type. The words are not changed, and nothing leaves the browser.</p>
+<p>A small, basic tool. Paste text from ChatGPT, Claude or Gemini and it swaps the fancy characters those bots love for the normal ones on your keyboard. Your words stay the same, and nothing gets sent anywhere: it all runs in your browser.</p>
 
 <label for="input">Text to clean</label>
 <textarea id="input" placeholder="Paste AI-written text here..."></textarea>
@@ -33,24 +33,21 @@
 
 <table id="counts" aria-label="Characters replaced"></table>
 
-<h2>Why remove these characters</h2>
-<p>The em dash, curly quotes and the ellipsis character are not new. Typesetters have used them for centuries, and they appear on almost every page of printed novels, newspapers and essays. Chat assistants now produce them constantly, the em dash above all, and many readers have come to see them as a sign that a text was written by a machine. One em dash in an email, a LinkedIn post or a cover letter can make a reader trust the rest a little less, even when a person wrote every word.</p>
-<p>Replacing them with the plain characters on a keyboard removes that distraction, so the text is judged on what it says. It also fixes practical problems: curly quotes break code and command lines, and invisible characters cause odd line breaks, failed searches and mismatches in forms and spreadsheets. The wording itself is not changed, so this alone does not make AI-written text read as human.</p>
-
-<h2>What gets replaced</h2>
+<h2>What it does</h2>
 <ul>
   <li>Curly quotes and apostrophes become straight " and '.</li>
-  <li>An em dash becomes a spaced hyphen ( - ); an en dash becomes a hyphen.</li>
-  <li>The single ellipsis character becomes three periods.</li>
-  <li>Non-breaking spaces (including the narrow one, U+202F) become normal spaces.</li>
-  <li>Zero-width spaces, joiners, word joiners, byte order marks and soft hyphens are removed.</li>
+  <li>Em dashes become a hyphen with spaces ( - ), and en dashes become a hyphen.</li>
+  <li>The ellipsis character becomes three dots.</li>
+  <li>Weird spaces become normal spaces, and invisible characters get deleted.</li>
 </ul>
+<p>That's it. It doesn't touch Markdown or emoji, and there are no settings.</p>
 
-<h2>Limitations</h2>
-<p>Every replacement is always on. This page does not strip Markdown (headings, bold, bullets), emoji, arrows or other symbols, and it cannot switch individual replacements off or choose what an em dash becomes. It also replaces non-breaking spaces that a language like French uses on purpose.</p>
+<h2>Why I made it</h2>
+<p>Em dashes and curly quotes used to be just good typography. Every printed book is full of them. Then chatbots started putting them everywhere, and now a lot of people see an em dash and think "a bot wrote this". I got tired of fixing them by hand in emails and posts, so I made this to do it for me. It also helps when you paste text into code or a form, where curly quotes and invisible characters break things.</p>
+<p>It only changes characters, not words. If the text sounds like a bot, it will still sound like a bot.</p>
 
 <footer>
-  Need Markdown and emoji removal or per-character options? <a href="https://srchtool.com/en/tools/text/ai-cleaner">More options at SrchTool.com</a>
+  Want more options, like removing Markdown and emoji or choosing what each character turns into? There's a fuller <a href="https://srchtool.com/en/tools/text/ai-cleaner">AI text cleaner on srchtool.com</a>, plus a bunch of other free text and developer tools.
 </footer>
 
 <script type="module">
