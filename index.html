@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Text Cleaner - Remove Em Dashes, Curly Quotes and Hidden Characters</title>
+<meta name="description" content="A minimal AI text cleaner: paste ChatGPT, Claude or Gemini output and get plain text back, with em dashes, curly quotes, ellipses, odd spaces and invisible characters replaced. Runs in the browser.">
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 760px; margin: 0 auto; padding: 24px 16px; color: #222; background: #fff; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  p, li { line-height: 1.5; }
+  label { font-weight: 600; display: block; margin: 16px 0 6px; }
+  textarea { width: 100%; box-sizing: border-box; height: 200px; padding: 10px; font: inherit; border: 1px solid #bbb; border-radius: 6px; }
+  table { border-collapse: collapse; margin: 12px 0; }
+  td { padding: 3px 12px 3px 0; }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  button { font: inherit; padding: 6px 14px; margin-right: 8px; }
+  footer { margin-top: 32px; padding-top: 12px; border-top: 1px solid #eee; color: #555; font-size: .95rem; }
+  a { color: #0645ad; }
+</style>
+</head>
+<body>
+<h1>AI Text Cleaner</h1>
+<p>Paste text from ChatGPT, Claude or Gemini. The typographic characters these models add are swapped for plain keyboard characters as you type. The words are not changed, and nothing leaves the browser.</p>
+
+<label for="input">Text to clean</label>
+<textarea id="input" placeholder="Paste AI-written text here..."></textarea>
+
+<label for="output">Cleaned text</label>
+<textarea id="output" readonly></textarea>
+<button type="button" id="copy">Copy cleaned text</button><button type="button" id="clear">Clear</button>
+<span id="status" aria-live="polite"></span>
+
+<table id="counts" aria-label="Characters replaced"></table>
+
+<h2>What gets replaced</h2>
+<ul>
+  <li>Curly quotes and apostrophes become straight " and '.</li>
+  <li>An em dash becomes a spaced hyphen ( - ); an en dash becomes a hyphen.</li>
+  <li>The single ellipsis character becomes three periods.</li>
+  <li>Non-breaking spaces (including the narrow one, U+202F) become normal spaces.</li>
+  <li>Zero-width spaces, joiners, word joiners, byte order marks and soft hyphens are removed.</li>
+</ul>
+
+<h2>Limitations</h2>
+<p>Every replacement is always on. This page does not strip Markdown (headings, bold, bullets), emoji, arrows or other symbols, and it cannot switch individual replacements off or choose what an em dash becomes. It also replaces non-breaking spaces that a language like French uses on purpose.</p>
+
+<footer>
+  Need Markdown and emoji removal or per-character options? <a href="https://srchtool.com/en/tools/text/ai-cleaner">More options at SrchTool.com</a>
+</footer>
+
+<script type="module">
+  import { cleanText } from "./clean.js";
+  const input = document.getElementById("input");
+  const output = document.getElementById("output");
+  const table = document.getElementById("counts");
+  const status = document.getElementById("status");
+  const update = () => {
+    const r = cleanText(input.value);
+    output.value = r.text;
+    table.replaceChildren(...r.counts.map(({ label, count }) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td></td><td class='n'></td>";
+      tr.children[0].textContent = label;
+      tr.children[1].textContent = count;
+      return tr;
+    }));
+    status.textContent = "";
+  };
+  input.addEventListener("input", update);
+  document.getElementById("copy").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(output.value); status.textContent = "Copied."; }
+    catch { output.select(); status.textContent = "Press Ctrl+C to copy."; }
+  });
+  document.getElementById("clear").addEventListener("click", () => { input.value = ""; update(); input.focus(); });
+  update();
+</script>
+</body>
+</html>
